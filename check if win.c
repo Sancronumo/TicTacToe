@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdbool.h>
+#include "Initialize.c"
 int board[3][3];
 
 typedef struct winSum_
@@ -8,40 +9,93 @@ typedef struct winSum_
     int times;
 } winSum;
 
+int winCon(winSum* winSum1,char orientation){
+    if(orientation=='D'){
+        for (int x = 0; x < 2; x++)
+        {
+        for (int i = 0; i < 3; i++)
+        {
+        if (x)
+        {
+            if (winSum1->value==board[i][2-i]){
+            winSum1->times++;
+            }else{
+            winSum1->times=0;
+            winSum1->value=board[i][2-i];
+            }
+        }else
+        {
+            if (winSum1->value==board[i][i]){
+            winSum1->times++;
+            }else{
+            winSum1->times=0;
+            winSum1->value=board[i][i];
+            }
+        }
+        }
+        if (winSum1->times==2)
+        {
+            return true;
+        }
+        }
+    return false;
+    }
 
-int checkIfWin(){
-    bool win=false;
+    int a,b;
     for (int i = 0; i < 3; i++)
     {
-        win=board[i][0]==board[i][1]&&board[i][1]==board[i][2]&&(board[i][0]=='X'||board[i][0]=='O');
-        if (win)
+    winSum1->value=0;
+    winSum1->times=0;
+    for (int j = 0; j < 3; j++)
+    {
+        if (orientation=='V')
         {
-            return win;
+            a=j;
+            b=i;
+        }else{
+            a=i;
+            b=j;
+        }
+        
+        if (!(board[a][b]==' '))
+        {
+            if (winSum1->value==board[a][b])
+            {
+                winSum1->times++;
+            }else{
+                winSum1->times=0;
+                winSum1->value=board[a][b];
+            }
+            
         }
         
     }
-    for (int j = 0; j < 3; j++)
+    if (winSum1->times==2)
     {
-        win=board[0][j]==board[1][j]&&board[1][j]==board[2][j]&&(board[0][j]=='X'||board[0][j]=='O');
-        if (win)
-        {
-            return win;
-        }
+        return true;
     }
-    win=board[0][0]==board[1][1]&&board[1][1]==board[2][2]&&(board[0][0]=='X'||board[0][0]=='O');
-    if (win)
-        {
-            return win;
-        }
-    win=board[0][2]==board[1][1]&&board[1][1]==board[2][0]&&(board[2][0]=='X'||board[2][0]=='O');
+        
+    }
+    return 0;
+}
+
+
+int checkIfWin(){
+    bool win=false;
+    winSum winSum1;   
+    win=winCon(&winSum1,'D');
+    win=winCon(&winSum1,'V')? winCon(&winSum1,'V'):win;
+    win=winCon(&winSum1,'H')? winCon(&winSum1,'H'):win;
     return win;
     
     
 }
 
 // int main(){
-//     board[0][0]='X';
-//     board[1][1]='X';
-//     board[2][2]='X';
-//     printf("%d",checkIfWin());
+//     startBoard();
+//     board[0][0]='O';
+//     board[1][1]='O';
+//     board[][2]='O';
+//     printf("Devolvio: %d",checkIfWin());
 //     return 0;
+//     }
