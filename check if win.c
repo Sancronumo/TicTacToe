@@ -2,6 +2,11 @@
 #include<stdbool.h>
 int board[3][3];
 
+typedef struct winSum_
+{
+    int value;
+    int times;
+} winSum;
 
 
 int checkIfWin(){

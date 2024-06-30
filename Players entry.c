@@ -4,25 +4,35 @@
 
 int board[3][3];
 
-void askMove(char * column, int *row,int player);
-void changeEntryType(char * column,int * row);
+typedef struct entry_
+{
+    char * rawtext;
+    int row;
+    char column;
+} entry;
+
+
+void askMove(entry* pEntry,int player);
+void changeEntryType(entry* pEntry);
+
 
 int main(){
-    char column;
-    int row;
+    entry pEntry;
     printBoard();
-    askMove(&column,&row,1);
+    askMove(&pEntry,1);
     printBoard();
-    askMove(&column,&row,2);
-    printBoard();
+    // askMove(&column,&row,2);
+    // printBoard();
 
 }
-void askMove(char * column,int * row,int player){
+
+
+void askMove(entry* pEntry,int player){
     char confirm='n';
     printf("Enter the column and row no spaces:\n");
-    scanf(" %c%d",column,row);
-    *column=toupper(*column);
-    printf("Did you choose %c%d?(y:yes,n:no)\n",*column,*row);
+    scanf(" %c%d",&pEntry->column,&pEntry->row);
+    pEntry->column=toupper(pEntry->column);
+    printf("Did you choose %c%d?(y:yes,n:no)\n",pEntry->column,pEntry->row);
     scanf(" %c",&confirm);
     if(confirm=='y')
     {
@@ -34,13 +44,13 @@ void askMove(char * column,int * row,int player){
         }else{
             charToPrint='O';
         }
-        changeEntryType(column,row);
-        if (board[*row][*column]==0)
+        changeEntryType(pEntry);
+        if (board[pEntry->row][pEntry->column]==0)
         {
-            board[*row][*column]=charToPrint;
+            board[pEntry->row][pEntry->column]=charToPrint;
         }else{
             printf("Space already filled, try again\n");
-            askMove(column,row,player);
+            askMove(pEntry,player);
         }
         
     }else{
@@ -49,22 +59,22 @@ void askMove(char * column,int * row,int player){
             printf("No valid entry, try again\n");
         }
         
-        askMove(column,row,player);
+        askMove(pEntry,player);
     }
 }
 
-void changeEntryType(char * column,int * row){
-    *row=*row-1;
-    switch (*column)
+void changeEntryType(entry* pEntry){
+    pEntry->row--;
+    switch (pEntry->column)
         {
         case 'A':
-            *column=0;
+            pEntry->column=0;
             break;
         case 'B':
-            *column=1;
+            pEntry->column=1;
             break;
         case 'C':
-            *column=2;
+            pEntry->column=2;
             break;
         }
 }
