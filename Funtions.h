@@ -11,6 +11,12 @@ typedef struct entry_
     char column;
 } entry;
 
+typedef struct winSum_
+{
+    int value;
+    int times;
+} winSum;
+
 void startBoard();
 int checkIfWin();
 void askMove(entry* pEntry,int player);
