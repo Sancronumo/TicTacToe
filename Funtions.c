@@ -12,20 +12,11 @@ void startBoard(){
         
     }
 }
-int winCondH(int i){
-    return board[i][0]==board[i][1]&&board[i][1]==board[i][2]&&(board[i][0]=='X'||board[i][0]=='O');
-}
-
-int winCondV(int j){
-    return board[0][j]==board[1][j]&&board[1][j]==board[2][j]&&(board[0][j]=='X'||board[0][j]=='O');
-}
-
-
 int checkIfWin(){
     bool win=false;
     for (int i = 0; i < 3; i++)
     {
-        win=winCond(i);
+        win=board[i][0]==board[i][1]&&board[i][1]==board[i][2]&&(board[i][0]=='X'||board[i][0]=='O');
         if (win)
         {
             return win;
@@ -34,7 +25,7 @@ int checkIfWin(){
     }
     for (int j = 0; j < 3; j++)
     {
-        win=winConV(j);
+        win=board[0][j]==board[1][j]&&board[1][j]==board[2][j]&&(board[0][j]=='X'||board[0][j]=='O');
         if (win)
         {
             return win;
@@ -51,12 +42,12 @@ int checkIfWin(){
     
 }
 
-void askMove(char * column,int * row,int player){
+void askMove(entry* pEntry,int player){
     char confirm='n';
     printf("Enter the column and row no spaces:\n");
-    scanf(" %c%d",column,row);
-    *column=toupper(*column);
-    printf("Did you choose %c%d?(y:yes,n:no)\n",*column,*row);
+    scanf(" %c%d",&pEntry->column,&pEntry->row);
+    pEntry->column=toupper(pEntry->column);
+    printf("Did you choose %c%d?(y:yes,n:no)\n",pEntry->column,pEntry->row);
     scanf(" %c",&confirm);
     if(confirm=='y')
     {
@@ -68,13 +59,13 @@ void askMove(char * column,int * row,int player){
         }else{
             charToPrint='O';
         }
-        changeEntryType(column,row);
-        if (board[*row][*column]==0)
+        changeEntryType(pEntry);
+        if (board[pEntry->row][pEntry->column]==0)
         {
-            board[*row][*column]=charToPrint;
+            board[pEntry->row][pEntry->column]=charToPrint;
         }else{
             printf("Space already filled, try again\n");
-            askMove(column,row,player);
+            askMove(pEntry,player);
         }
         
     }else{
@@ -83,22 +74,22 @@ void askMove(char * column,int * row,int player){
             printf("No valid entry, try again\n");
         }
         
-        askMove(column,row,player);
+        askMove(pEntry,player);
     }
 }
 
-void changeEntryType(char * column,int * row){
-    *row=*row-1;
-    switch (*column)
+void changeEntryType(entry* pEntry){
+    pEntry->row--;
+    switch (pEntry->column)
         {
         case 'A':
-            *column=0;
+            pEntry->column=0;
             break;
         case 'B':
-            *column=1;
+            pEntry->column=1;
             break;
         case 'C':
-            *column=2;
+            pEntry->column=2;
             break;
         }
 }

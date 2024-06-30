@@ -3,16 +3,12 @@
 #include "Funtions.h"
 // Global variable
 int board[3][3];
-struct playerEntry
-{
-    char column;
-    int row;
-};
+
 
 
 int main(){
-    int player=1, turns=1, row;
-    char column;
+    int player=1, turns=1;
+    entry pEntry;
     bool draw=false;
 
     while (!(checkIfWin()))
@@ -20,7 +16,7 @@ int main(){
         player = (turns%2!=0)? 1: 2;
         printBoard();
         printf("Player %d goes. ",player);
-        askMove(&column,&row,player);
+        askMove(&pEntry,player);
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
